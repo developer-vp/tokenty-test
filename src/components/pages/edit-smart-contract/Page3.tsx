@@ -4,27 +4,27 @@ import MemberSelect from "@/components/pages/edit-smart-contract/page-components
 import { CircleUser, Clock4, DollarSign } from "lucide-react";
 import React, { Dispatch, SetStateAction, useCallback } from "react";
 import Link from "next/link";
-import { UseFormReturn } from "react-hook-form";
-import { z } from "zod";
-import { createContractFormSchema } from "@/app/(with-sidebar)/(without-block-topRight-links)/edit-smart-contract/ContractPages";
+import { SmartContractData } from "@/lib/Interfaces/SmartContractInterface";
 
 const Page3 = ({
   createQueryString,
-  form,
+  data,
+  setData,
 }: {
   createQueryString: (name: string, value: string) => string;
-  form: UseFormReturn<z.infer<typeof createContractFormSchema>, any, undefined>;
+  data: SmartContractData;
+  setData: Dispatch<SetStateAction<SmartContractData>>;
 }) => {
   return (
     <div className="mb-5 flex gap-4">
       <Sidebar createQueryString={createQueryString} />
 
       <div className="flex flex-col gap-5">
-        <PaymentStatement form={form} />
+        <PaymentStatement data={data} setData={setData} />
 
-        <MemberSelect form={form} />
+        <MemberSelect data={data} setData={setData} />
 
-        <RoyalityStatement form={form} />
+        <RoyalityStatement data={data} setData={setData} />
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import React from "react";
 import ContractPages from "./ContractPages";
 import { getSession } from "@/auth";
 import { redirect } from "next/navigation";
-import { Roles } from "@/lib/enums/roles";
 
 const Page = async ({
   searchParams,
@@ -16,7 +15,7 @@ const Page = async ({
     redirect("/login");
   }
   const role = session.user.role;
-  if (role !== Roles.manager) {
+  if (role !== "manager") {
     redirect("/");
   }
 

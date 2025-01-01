@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { ImageAssets } from "@/assets/ImageAssets";
 import { Button } from "@/components/ui/button";
-import { UserRoundCheck } from "lucide-react";
+import { CircleAlert, UserRoundCheck } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -11,11 +11,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import CompanyGoogleLogin from "./CompanyGoogleLogin";
-import CompanyOutlookLogin from "./CompanyOutlookLogin";
-import Rscreen2Tooltip from "./Rscreen2Tooltip";
-import Rscreen2Choice from "./Rscreen2Choice";
-import RegisterErrors from "./RegisterErrors";
+import Link from "next/link";
+import GoogleButton from "../login/GoogleButton";
+import OutlookButton from "../login/OutlookButton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signIn } from "next-auth/react";
+import Cookies from "js-cookie";
+import { Roles } from "@/lib/enums/roles";
 
 const Rscreen2 = ({ handleBackButton }: { handleBackButton: () => void }) => {
   const [isManager, setIsManager] = useState("No");
@@ -53,17 +73,82 @@ const Rscreen2 = ({ handleBackButton }: { handleBackButton: () => void }) => {
           </p>
 
           <div className="flex items-center gap-2">
-            <Rscreen2Choice isManager={isManager} setIsManager={setIsManager} />
+            <Select value={isManager} onValueChange={setIsManager}>
+              <SelectTrigger id="framework" className="w-20 rounded-[6px]">
+                {isManager}
+              </SelectTrigger>
 
-            <Rscreen2Tooltip />
+              <SelectContent position="popper">
+                <SelectItem className="cursor-pointer" value="No">
+                  No
+                </SelectItem>
+                <SelectItem className="cursor-pointer" value="Yes">
+                  Yes
+                </SelectItem>
+              </SelectContent>
+            </Select>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="outline-none ring-0">
+                <CircleAlert
+                  size={20}
+                  className="rotate-180 fill-foreground/70 text-white"
+                />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="mr-4 w-72" sideOffset={10}>
+                <DropdownMenuItem className="bg-white p-3 text-black focus:bg-white md:p-4">
+                  You need to be a manager to create Smart Contracts as they are
+                  a legal binding agreement between your company and your value
+                  creator. You will need to authorize payments through your
+                  company{`'`}s wallet.
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
         <CardContent>
           <div className="grid w-full items-center gap-4">
-            <CompanyGoogleLogin isManager={isManager} />
+            <div className="w-full">
+              <Button
+                className="flex w-full items-center justify-center border border-[#ebebeb] bg-transparent py-6 text-[#202123] hover:bg-transparent"
+                onClick={() => {
+                  Cookies.set("role", Roles.manager, { path: "/" });
+                  signIn("google", { callbackUrl: "/" });
+                }}
+                disabled={isManager === "No"}
+              >
+                <div className="h-7 w-7">
+                  <Image
+                    src={ImageAssets.Base.Google}
+                    alt="Google Logo"
+                    className="h-full w-full object-contain object-center"
+                  />
+                </div>
+                Google account
+              </Button>
+            </div>
 
-            <CompanyOutlookLogin isManager={isManager} />
+            <div className="w-full">
+              <Button
+                className="flex w-full items-center justify-center border border-[#ebebeb] bg-transparent py-6 text-[#202123] hover:bg-transparent"
+                onClick={() => {
+                  Cookies.set("role", Roles.manager, { path: "/" });
+                  signIn("azure-ad", { callbackUrl: "/" });
+                }}
+                disabled={isManager === "No"}
+              >
+                <div className="h-7 w-7">
+                  <Image
+                    src={ImageAssets.Base.Outlook}
+                    alt="Outlook Logo"
+                    className="h-full w-full object-contain object-center"
+                  />
+                </div>
+                Outlook account
+              </Button>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="mt-3 flex justify-between">
@@ -76,8 +161,6 @@ const Rscreen2 = ({ handleBackButton }: { handleBackButton: () => void }) => {
           </Button>
         </CardFooter>
       </Card>
-
-      <RegisterErrors />
     </div>
   );
 };

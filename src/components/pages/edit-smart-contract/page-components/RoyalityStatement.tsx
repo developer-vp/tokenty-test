@@ -1,5 +1,3 @@
-import { createContractFormSchema } from "@/app/(with-sidebar)/(without-block-topRight-links)/edit-smart-contract/ContractPages";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -10,18 +8,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Time } from "@/lib/enums/utils";
+import { SmartContractData } from "@/lib/Interfaces/SmartContractInterface";
 import { cn } from "@/lib/utils";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { z } from "zod";
+import React, { Dispatch, SetStateAction } from "react";
 
 const RoyalityStatement = ({
-  form,
+  data,
+  setData,
 }: {
-  form: UseFormReturn<z.infer<typeof createContractFormSchema>, any, undefined>;
+  data: SmartContractData;
+  setData: Dispatch<SetStateAction<SmartContractData>>;
 }) => {
-  const [key, setKey] = useState(+new Date());
-
   return (
     <div className="flex items-center">
       <div className="rounded-lg bg-white px-4 py-3 leading-[50px] shadow-md">
@@ -34,43 +31,33 @@ const RoyalityStatement = ({
             "inline-flex items-center whitespace-nowrap rounded-sm pr-3 text-sm font-semibold text-black",
           )}
         >
-          <FormField
-            control={form.control}
-            name="first_payment_after_number"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Select
-                      onValueChange={(val) => field.onChange(parseInt(val))}
-                    >
-                      <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
-                        {/* <SelectValue placeholder="1" /> */}
-                        {field.value}
-                      </SelectTrigger>
+          <Select
+            onValueChange={(value) =>
+              setData((prev) => ({ ...prev, num1: parseInt(value) }))
+            }
+          >
+            <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
+              <SelectValue placeholder="1" />
+            </SelectTrigger>
 
-                      <SelectContent className="h-56">
-                        {/* prettier-ignore */}
-                        <SelectGroup>
-                          {[ "1", "2", "3", "4", "5", "6", "7", "9", "10", "11",].map((Item, idx) => {
-                            return (
-                              <SelectItem
-                                value={Item}
-                                key={idx}
-                                className="cursor-pointer"
-                              >
-                                {Item}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+            <SelectContent className="h-56">
+              <SelectGroup>
+                {["1", "2", "3", "4", "5", "5", "6", "7", "9", "10", "11"].map(
+                  (Item, idx) => {
+                    return (
+                      <SelectItem
+                        value={Item}
+                        key={idx}
+                        className="cursor-pointer"
+                      >
+                        {Item}
+                      </SelectItem>
+                    );
+                  },
+                )}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </span>
 
         <span
@@ -78,38 +65,26 @@ const RoyalityStatement = ({
             "inline-flex items-center whitespace-nowrap rounded-sm pr-3 text-sm font-semibold text-black",
           )}
         >
-          <FormField
-            control={form.control}
-            name="first_payment_after_unit"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Select onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
-                        {/* <SelectValue placeholder="Month" /> */}
-                        {field.value}
-                      </SelectTrigger>
+          <Select
+            onValueChange={(value) =>
+              setData((prev) => ({ ...prev, time1: value as Time }))
+            }
+          >
+            <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
 
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem
-                            value={"month"}
-                            className="cursor-pointer"
-                          >
-                            {Time.Month}
-                          </SelectItem>
-                          <SelectItem value={"year"} className="cursor-pointer">
-                            {Time.Year}
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value={Time.Month} className="cursor-pointer">
+                  {Time.Month}
+                </SelectItem>
+                <SelectItem value={Time.Year} className="cursor-pointer">
+                  {Time.Year}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </span>
 
         <span className="mr-4 text-sm">
@@ -125,41 +100,26 @@ const RoyalityStatement = ({
             "inline-flex items-center whitespace-nowrap rounded-sm pr-3 text-sm font-semibold text-black",
           )}
         >
-          <FormField
-            control={form.control}
-            name="payment_frequency_unit"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Select onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
-                        {/* <SelectValue placeholder="Month" /> */}
-                        {field.value}
-                      </SelectTrigger>
+          <Select
+            onValueChange={(value) =>
+              setData((prev) => ({ ...prev, time2: value as Time }))
+            }
+          >
+            <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
 
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem
-                            value={Time.Month}
-                            className="cursor-pointer"
-                          >
-                            {Time.Month}
-                          </SelectItem>
-                          <SelectItem
-                            value={Time.Year}
-                            className="cursor-pointer"
-                          >
-                            {Time.Year}
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value={Time.Month} className="cursor-pointer">
+                  {Time.Month}
+                </SelectItem>
+                <SelectItem value={Time.Year} className="cursor-pointer">
+                  {Time.Year}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </span>
 
         <span className="mr-4 text-sm">during next</span>
@@ -169,43 +129,33 @@ const RoyalityStatement = ({
             "inline-flex items-center whitespace-nowrap rounded-sm pr-3 text-sm font-semibold text-black",
           )}
         >
-          <FormField
-            control={form.control}
-            name="payment_duration_number"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Select
-                      onValueChange={(val) => field.onChange(parseInt(val))}
-                    >
-                      <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
-                        {/* <SelectValue placeholder="1" /> */}
-                        {field.value}
-                      </SelectTrigger>
+          <Select
+            onValueChange={(value) =>
+              setData((prev) => ({ ...prev, num2: parseInt(value) }))
+            }
+          >
+            <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
+              <SelectValue placeholder="1" />
+            </SelectTrigger>
 
-                      <SelectContent className="h-56">
-                        {/* prettier-ignore */}
-                        <SelectGroup>
-                          {[ "1", "2", "3", "4", "5", "6", "7", "9", "10", "11",].map((Item, idx) => {
-                            return (
-                              <SelectItem
-                                value={Item}
-                                key={idx}
-                                className="cursor-pointer"
-                              >
-                                {Item}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+            <SelectContent className="h-56">
+              <SelectGroup>
+                {["1", "2", "3", "4", "5", "5", "6", "7", "9", "10", "11"].map(
+                  (Item, idx) => {
+                    return (
+                      <SelectItem
+                        value={Item}
+                        key={idx}
+                        className="cursor-pointer"
+                      >
+                        {Item}
+                      </SelectItem>
+                    );
+                  },
+                )}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </span>
 
         <span
@@ -213,41 +163,26 @@ const RoyalityStatement = ({
             "inline-flex items-center whitespace-nowrap rounded-sm pr-3 text-sm font-semibold text-black",
           )}
         >
-          <FormField
-            control={form.control}
-            name="payment_duration_unit"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Select onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
-                        {/* <SelectValue placeholder="Month" /> */}
-                        {field.value}
-                      </SelectTrigger>
+          <Select
+            onValueChange={(value) =>
+              setData((prev) => ({ ...prev, time3: value as Time }))
+            }
+          >
+            <SelectTrigger className="w-full font-bold !outline-none !ring-0 [&_svg]:ml-2">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
 
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem
-                            value={Time.Month}
-                            className="cursor-pointer"
-                          >
-                            {Time.Month}
-                          </SelectItem>
-                          <SelectItem
-                            value={Time.Year}
-                            className="cursor-pointer"
-                          >
-                            {Time.Year}
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value={Time.Month} className="cursor-pointer">
+                  {Time.Month}
+                </SelectItem>
+                <SelectItem value={Time.Year} className="cursor-pointer">
+                  {Time.Year}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </span>
       </div>
     </div>

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import NameSelect from "@/components/molecules/Payments-Components/NameSelect";
 import { Input } from "@/components/ui/input";
-import AddMember from "./AddMember";
 
 const EditTeamComponent = () => {
   return (
@@ -25,7 +24,25 @@ const EditTeamComponent = () => {
         save
       </p>
 
-      <AddMember />
+      <div className="mt-5 flex flex-col gap-2">
+        <h2 className="font-semibold text-[#606060]">Members list</h2>
+
+        <div className="flex items-center gap-2 md:gap-5">
+          <div className="flex min-w-max justify-center rounded-lg border border-gray-300 px-0.5 py-1">
+            <Input
+              type="text"
+              placeholder="jbeinesfurcada@gmail.com"
+              className="border-none p-2 shadow-none ring-0 focus-visible:ring-transparent sm:w-72 md:w-96"
+            />
+
+            <div className="flex-1">
+              <NameSelect />
+            </div>
+          </div>
+
+          <X size={18} className="cursor-pointer text-foreground/50" />
+        </div>
+      </div>
 
       <div className="mt-2 flex items-center gap-2.5">
         <Plus size={18} className="cursor-pointer" />

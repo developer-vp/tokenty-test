@@ -6,25 +6,16 @@ import Rscreen2 from "./Rscreen2";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from "js-cookie";
-import { useRegisterButtonsStore } from "@/store/RegisterStore";
 
 export const registerFormSchema = z.object({
   publicName: z.string().min(3),
   registerName: z.string().min(3),
   Country: z.string().min(2),
   Industry: z.string().min(2),
-  noOfEmployees: z.string().min(1),
+  NoOfEmployees: z.string().min(1),
 });
 
 const Register = ({ page }: { page: string }) => {
-  /**
-   * To undisable the google and outlook button
-   */
-  const setButtonDisabled = useRegisterButtonsStore(
-    (state) => state.setRegisterButtonDisabled,
-  );
-
   const searchParams = useSearchParams();
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -51,25 +42,20 @@ const Register = ({ page }: { page: string }) => {
       registerName: "",
       Country: "",
       Industry: "",
-      noOfEmployees: "",
+      NoOfEmployees: "",
     },
   });
 
   const handleSubmit = async (data: z.infer<typeof registerFormSchema>) => {
-    // console.log(data);
+    console.log(data);
 
-    Cookies.set("register-company-data", JSON.stringify(data), { path: "/" });
-
-    form.reset({
-      publicName: "",
-      registerName: "",
-      Country: "",
-      Industry: "",
-      noOfEmployees: "",
-    });
-
-    // google and outlook buttons on next Rscreen2
-    setButtonDisabled(false);
+    // form.reset({
+    //   publicName: "",
+    //   registerName: "",
+    //   Country: "",
+    //   Industry: "",
+    //   NoOfEmployees: "",
+    // });
     router.push(`/company-register` + "?" + createQueryString("page", "2"));
   };
 

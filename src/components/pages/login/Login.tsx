@@ -17,7 +17,7 @@ import LoginError from "./LoginError";
 
 const Login = () => {
   return (
-    <div className="relative mx-5 flex h-[85vh] items-center justify-center md:mx-0 md:h-[100vh]">
+    <div className="relative mx-5 flex h-[100vh] items-center justify-center md:mx-0">
       <Card className="w-[400px] border-none px-3 shadow-md">
         <div className="flex w-full flex-col items-center gap-4">
           <div className="mt-5 h-12 w-12">

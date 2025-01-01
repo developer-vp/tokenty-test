@@ -6,7 +6,6 @@ import TooltipButton from "@/components/molecules/Signin-Components/TooltipButto
 import { cn } from "@/lib/utils";
 import MobileTooltip from "@/components/molecules/Signin-Components/MobileTooltip";
 import { Roles } from "@/lib/enums/roles";
-import Cookies from "js-cookie";
 
 const SignIn = () => {
   return (
@@ -27,21 +26,11 @@ const SignIn = () => {
           <div className="mt-5 flex h-8 w-[200px] items-center justify-center">
             <Link
               href={"/company-register?page=1"}
-              onClick={() => Cookies.set("role", Roles.company, { path: "/" })}
               className="cursor-pointer font-medium transition-all duration-300 hover:text-lg"
             >
               Register Company
             </Link>
           </div>
-          {/* <div className="mt-2 flex w-[200px] items-center justify-center text-gray-500">
-            <Link
-              href={"/login"}
-              onClick={() => Cookies.set("role", Roles.company, { path: "/" })}
-              className="cursor-pointer font-medium"
-            >
-              Signin Company
-            </Link>
-          </div> */}
         </div>
         <MobileTooltip />
       </section>

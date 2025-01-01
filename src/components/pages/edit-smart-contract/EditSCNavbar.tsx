@@ -4,29 +4,19 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
-import { createContractFormSchema } from "@/app/(with-sidebar)/(without-block-topRight-links)/edit-smart-contract/ContractPages";
-import { UseFormReturn } from "react-hook-form";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 
 const EditSCNavbar = ({
   page,
   createQueryString,
   handleNextButton,
+  handleFinishButton,
   handleBackButton,
-  handleSubmit,
-  form,
 }: {
   page: string;
   createQueryString: (name: string, value: string) => string;
   handleNextButton: () => void;
+  handleFinishButton: () => void;
   handleBackButton: () => void;
-  handleSubmit: (
-    data: z.infer<typeof createContractFormSchema>,
-  ) => Promise<void>;
-  form: UseFormReturn<z.infer<typeof createContractFormSchema>, any, undefined>;
 }) => {
   const router = useRouter();
 
@@ -40,26 +30,9 @@ const EditSCNavbar = ({
           <ChevronLeft size={18} className="text-foreground" />
         </Button>
 
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => {
-            return (
-              <FormItem className="absolute left-12">
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="Edit Smart Contract name"
-                    className={cn(
-                      "mx-auto inline w-[250px] rounded-sm border-0 bg-white px-4 text-start text-base font-bold shadow-none !outline-none !ring-0 placeholder:text-sm",
-                      form.formState.errors.name && "border border-red-500",
-                    )}
-                  />
-                </FormControl>
-              </FormItem>
-            );
-          }}
-        />
+        <h2 className="absolute left-12 text-base font-bold">
+          Edit Smart Contract name
+        </h2>
 
         <div className="absolute right-2 flex items-center gap-4">
           {page !== "3" && (
@@ -73,7 +46,7 @@ const EditSCNavbar = ({
 
           <Button
             className="flex gap-2 rounded-3xl border-gray-100 bg-[#f7f6f6] px-8 font-semibold text-black hover:bg-transparent"
-            onClick={() => handleSubmit}
+            onClick={handleFinishButton}
             disabled={page !== "3"}
           >
             Finish

@@ -17,116 +17,53 @@ const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-  pages: { error: "/login", signIn: "/signin", signOut: "/signin" },
+  pages: { signIn: "/", signOut: "/signin" },
   callbacks: {
     async signIn({ profile, user, account, credentials, email }) {
       if (profile && profile.name && profile.email) {
+        // console.log(
+        //   "000222:\n",
+        //   "profile",
+        //   profile,
+        //   "\nUser:",
+        //   user,
+        //   "\naccount: ",
+        //   account,
+        //   "\ncredentials: ",
+        //   credentials,
+        //   "\nemail: ",
+        //   email,
+        // );
+        console.log("Hello");
+
         const roleSelected = await cookies().get("role");
-        let companyData = await cookies().get("register-company-data");
 
-        // if (roleSelected && roleSelected.value === Roles.company) {
-        //   try {
-        //     const response = await fetch(
-        //       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/company/login`,
-        //       {
-        //         method: "POST",
-        //         body: JSON.stringify({
-        //           email: profile.email,
-        //         }),
-        //         headers: {
-        //           "Content-Type": "application/json",
-        //         },
-        //       },
-        //     );
-        //     if (!response.ok) {
-        //       const errorData = await response.json();
-        //       return `/login?error=${errorData.message}`;
-        //     }
+        if (roleSelected?.value === Roles.manager) {
+          user.role = Roles.manager;
+        } else if (roleSelected?.value === Roles.holder) {
+          user.role = Roles.holder;
+        }
 
-        //     const data = await response.json();
+        user.token = "This is my access token";
 
-        //     user.role = Roles.company;
-        //     user.token = data.token;
-
-        //     return true;
-        //   } catch (error: any) {
-        //     console.log("error: ", error.message || error);
-        //     return `/login?error=Something went wrong`;
-        //   }
+        return true;
+        // if (
+        //   profile.email === "u.chaudhry256@gmail.com" ||
+        //   profile.email === "arhamsecurehopes@gmail.com"
+        // ) {
+        //   user.role = "manager";
+        //   user.token = "This is my access token";
+        //   return true;
+        // } else if (
+        //   profile.email === "ch256.it@gmail.com" ||
+        //   profile.email === "arhamsarwar786@gmail.com"
+        // ) {
+        //   user.role = "holder";
+        //   user.token = "This is my access token";
+        //   return true;
         // }
-
-        // prettier-ignore
-        if (roleSelected && roleSelected.value === Roles.company && companyData) {
-          companyData = JSON.parse(companyData.value);
-
-          try {
-            const response = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/company/`,
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  name: user.name,
-                  email: user.email,
-                  image: user.image,
-                  ...companyData,
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              },
-            );
-            if (!response.ok) {
-              const errorData = await response.json();
-              return `/company-register?page=2&error=${errorData.message}`;
-            }
-
-            const data = await response.json();
-
-            user.role = Roles.manager;
-            user.token = data.token;
-
-            return true;
-          } catch (error: any) {
-            console.log("error: ", error.message || error);
-            return `/login?error=Something went wrong`;
-          }
-        }
-
-        // prettier-ignore
-        if (roleSelected?.value === Roles.holder || roleSelected?.value === Roles.manager) {
-          try {
-            const response = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user/login`,
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  email: profile.email,
-                  role: roleSelected?.value,
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              },
-            );
-            if (!response.ok) {
-              const errorData = await response.json();
-              return `/login?error=${errorData.message}`;
-            }
-
-            const data = await response.json();
-
-            user.role = data.data.user.role;
-            user.token = data.data.token;
-
-            return true;
-          } catch (error: any) {
-            console.log("error: ", error.message || error);
-            return `/login?error=Something went wrong`;
-          }
-        }
       }
-
-      return false;
+      return `/login?error=${profile?.email}`;
     },
     async jwt({ token, user }) {
       if (user) {
@@ -136,6 +73,7 @@ const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      token.token = "this is my user token";
       if (session.user) {
         session.user.role = token.role;
         session.user.token = token.token;

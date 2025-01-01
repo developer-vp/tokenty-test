@@ -25,18 +25,3 @@ export const useRegisterStore = create<RegisterStore>()(
     ),
   ),
 );
-
-/**
- * Second store start
- */
-
-type RegisterButtonsStore = {
-  registerButtonDisabled: boolean;
-  setRegisterButtonDisabled: (newData: boolean) => void;
-};
-
-export const useRegisterButtonsStore = create<RegisterButtonsStore>((set) => ({
-  registerButtonDisabled: false,
-  setRegisterButtonDisabled: (newData) =>
-    set({ registerButtonDisabled: newData }),
-}));

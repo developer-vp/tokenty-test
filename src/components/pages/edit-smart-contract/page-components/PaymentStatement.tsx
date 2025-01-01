@@ -1,16 +1,14 @@
-import { createContractFormSchema } from "@/app/(with-sidebar)/(without-block-topRight-links)/edit-smart-contract/ContractPages";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ContractType } from "@/lib/enums/utils";
+import { SmartContractData } from "@/lib/Interfaces/SmartContractInterface";
 import { cn } from "@/lib/utils";
-import React from "react";
-import { UseFormReturn } from "react-hook-form";
-import { z } from "zod";
+import React, { Dispatch, SetStateAction } from "react";
 
 const PaymentStatement = ({
-  form,
+  data,
+  setData,
 }: {
-  form: UseFormReturn<z.infer<typeof createContractFormSchema>, any, undefined>;
+  data: SmartContractData;
+  setData: Dispatch<SetStateAction<SmartContractData>>;
 }) => {
   return (
     <div className="flex items-center">
@@ -20,36 +18,32 @@ const PaymentStatement = ({
         <span
           className={cn(
             "inline-flex items-center whitespace-nowrap rounded-sm border bg-white px-2 pr-3 text-sm font-semibold text-black",
-            form.formState.errors.percent && "border-red-600",
+            {
+              "border-red-600":
+                data.percent === undefined ||
+                data.percent > 100 ||
+                data.percent < 0,
+            },
           )}
         >
-          <FormField
-            control={form.control}
-            name="percent"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Input
-                      // {...field}
-                      value={field.value}
-                      onChange={(e) => field.onChange(parseInt(e.target.value))}
-                      type="number"
-                      placeholder="20"
-                      className={cn(
-                        "mx-auto inline w-8 rounded-sm border-0 bg-white px-0 text-center shadow-none !outline-none !ring-0",
-                        /**
-                         * @classes below are for removing arrows of input
-                         */
-                        "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
-                      )}
-                    />
-                  </FormControl>
-                </FormItem>
-              );
-            }}
+          <Input
+            value={data.percent}
+            onChange={(e) =>
+              setData((prev) => ({
+                ...prev,
+                percent: parseInt(e.target.value),
+              }))
+            }
+            placeholder="20"
+            type="number"
+            className={cn(
+              "mx-auto inline w-8 rounded-sm border-0 bg-white px-0 text-center shadow-none !outline-none !ring-0",
+              /**
+               * removing arrows of input field
+               */
+              "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+            )}
           />
-
           <span>%</span>
         </span>
 
@@ -57,74 +51,49 @@ const PaymentStatement = ({
 
         <span
           className={cn(
-            "inline-flex items-center gap-1 whitespace-nowrap rounded-sm border bg-white px-1 py-2.5 text-sm font-semibold text-black",
+            "inline-flex items-center gap-1 whitespace-nowrap rounded-sm border bg-white px-1 py-1 text-sm font-semibold text-black",
           )}
         >
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormControl>
-                    <span>
-                      <span
-                        className={cn(
-                          "cursor-pointer rounded-sm px-8 py-2 text-xs text-foreground/60",
-                          {
-                            "bg-gray-300 text-foreground":
-                              field.value === ContractType.Revenue,
-                          },
-                        )}
-                        onClick={() => field.onChange(ContractType.Revenue)}
-                      >
-                        Revenue
-                      </span>
-                      <span
-                        className={cn(
-                          "cursor-pointer rounded-sm px-8 py-2 text-xs text-foreground/60",
-                          {
-                            "bg-gray-300 text-foreground":
-                              field.value === ContractType.Profile,
-                          },
-                        )}
-                        onClick={() => field.onChange(ContractType.Profile)}
-                      >
-                        Profit
-                      </span>
-                    </span>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+          <span
+            className={cn(
+              "cursor-pointer rounded-sm px-8 py-1.5 text-xs text-foreground/60",
+              {
+                "bg-gray-300 text-foreground": data.isRevenue,
+              },
+            )}
+            onClick={() => setData((prev) => ({ ...prev, isRevenue: true }))}
+          >
+            Revenue
+          </span>
+
+          <span
+            className={cn(
+              "cursor-pointer rounded-sm px-8 py-1.5 text-xs text-foreground/60",
+              {
+                "bg-gray-300 text-foreground": !data.isRevenue,
+              },
+            )}
+            onClick={() => setData((prev) => ({ ...prev, isRevenue: false }))}
+          >
+            Profit
+          </span>
         </span>
         <span className="mx-4 text-sm">generated by the revenue stream</span>
         {/* <Input type="text" className="flex-1 rounded-lg border p-2 md:w-44" /> */}
         <span
           className={cn(
             "inline-flex items-center whitespace-nowrap rounded-sm border bg-white px-2 pr-3 text-sm font-semibold text-black",
-            form.formState.errors.revenueStream && "border-red-600",
           )}
         >
-          <FormField
-            control={form.control}
-            name="revenueStream"
-            render={({ field }) => {
-              return (
-                <FormItem className="">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="'' Web Application ''"
-                      className={cn(
-                        "mx-auto inline rounded-sm border-0 bg-white px-0 text-center text-xs shadow-none !outline-none !ring-0 placeholder:text-xs",
-                      )}
-                    />
-                  </FormControl>
-                </FormItem>
-              );
-            }}
+          <Input
+            value={data.stream}
+            onChange={(e) =>
+              setData((prev) => ({ ...prev, stream: e.target.value }))
+            }
+            placeholder="Doky Application"
+            className={cn(
+              "mx-auto inline rounded-sm border-0 bg-white px-0 text-center text-xs shadow-none !outline-none !ring-0 placeholder:text-xs",
+            )}
           />
         </span>
       </div>

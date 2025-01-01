@@ -4,18 +4,8 @@ import TopRightLinks from "@/components/molecules/Navbar-Components/TopRightLink
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import MobileSidebar from "@/components/molecules/sidebar/Sidebar-Components/MobileSidebar";
-import { getSession } from "@/auth";
-import { Roles } from "@/lib/enums/roles";
-import { redirect } from "next/navigation";
 
-const Page = async () => {
-  const session = await getSession();
-  if (!session) redirect("/signin");
-  const role = session.user.role;
-  if (role !== Roles.manager) {
-    redirect("/login");
-  }
-
+const Page = () => {
   return (
     <div>
       <nav className="flex items-center gap-2 md:gap-5">

@@ -5,9 +5,9 @@ export interface SmartContractData {
   isRevenue: boolean;
   stream: string;
   owner: string;
-  first_payment_after_number: number;
-  first_payment_after_unit: Time;
-  payment_frequency_unit: Time;
-  payment_duration_number: number;
-  payment_duration_unit: Time;
+  num1: number;
+  time1: Time;
+  time2: Time;
+  num2: number;
+  time3: Time;
 }

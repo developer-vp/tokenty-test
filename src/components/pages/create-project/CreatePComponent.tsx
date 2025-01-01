@@ -8,7 +8,7 @@ const CreatePComponent = () => {
   return (
     <div className="mt-12">
       <div className="flex flex-col items-start gap-7 md:flex-row md:items-end">
-        <Link href={`/edit-team`}>
+        <Link href={`/create-project/edit-team`}>
           <Card className="flex h-32 w-40 items-end bg-gradient-to-r from-[rgb(146,0,79)] to-[rgb(190,26,39)] text-white shadow-md transition-all duration-200 hover:shadow-lg">
             <CardContent className="p-4 text-sm font-semibold leading-4">
               <Plus size={18} className="mb-1" />

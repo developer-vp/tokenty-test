@@ -42,7 +42,7 @@ const Rscreen1 = ({
       registerName: string;
       Country: string;
       Industry: string;
-      noOfEmployees: string;
+      NoOfEmployees: string;
     },
     any,
     undefined
@@ -203,7 +203,7 @@ const Rscreen1 = ({
 
                 <FormField
                   control={form.control}
-                  name="noOfEmployees"
+                  name="NoOfEmployees"
                   render={({ field }) => {
                     return (
                       <FormItem className="flex items-center justify-between">

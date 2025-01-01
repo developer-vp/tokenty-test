@@ -5,22 +5,19 @@ import MemberSelect from "@/components/pages/edit-smart-contract/page-components
 import { CircleUser, Clock4, DollarSign } from "lucide-react";
 import React, { useState } from "react";
 import { SmartContractData } from "@/lib/Interfaces/SmartContractInterface";
-import { ContractType, MonthOrYear, Time } from "@/lib/enums/utils";
-import { createContractFormSchema } from "@/app/(with-sidebar)/(without-block-topRight-links)/edit-smart-contract/ContractPages";
-import { z } from "zod";
+import { Time } from "@/lib/enums/utils";
 
 const Page3 = ({ ContractID }: { ContractID: string }) => {
-  const [data, setData] = useState<z.infer<typeof createContractFormSchema>>({
-    name: "Edit Smart Contract name",
+  const [data, setData] = useState<SmartContractData>({
     percent: 0,
-    type: ContractType.Revenue,
-    revenueStream: "",
-    holderEmail: "",
-    first_payment_after_number: 1,
-    first_payment_after_unit: MonthOrYear.Month,
-    payment_frequency_unit: MonthOrYear.Month,
-    payment_duration_number: 1,
-    payment_duration_unit: MonthOrYear.Month,
+    isRevenue: true,
+    stream: "",
+    owner: "",
+    num1: 1,
+    time1: Time.Month,
+    time2: Time.Month,
+    num2: 1,
+    time3: Time.Year,
   });
 
   return (
@@ -28,11 +25,11 @@ const Page3 = ({ ContractID }: { ContractID: string }) => {
       <Sidebar />
 
       <div className="flex flex-col gap-5">
-        <PaymentStatement form={form} />
+        <PaymentStatement data={data} setData={setData} />
 
-        <MemberSelect form={form} />
+        <MemberSelect data={data} setData={setData} />
 
-        <RoyalityStatement form={form} />
+        <RoyalityStatement data={data} setData={setData} />
       </div>
     </div>
   );

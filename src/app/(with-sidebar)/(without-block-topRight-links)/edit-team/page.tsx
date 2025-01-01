@@ -6,13 +6,12 @@ import MobileSidebar from "@/components/molecules/sidebar/Sidebar-Components/Mob
 import TopRightLinks from "@/components/molecules/Navbar-Components/TopRightLinks";
 import { getSession } from "@/auth";
 import { redirect } from "next/navigation";
-import { Roles } from "@/lib/enums/roles";
 
 const Page = async () => {
   const session = await getSession();
   if (!session) redirect("/signin");
   const role = session.user.role;
-  if (role !== Roles.manager) {
+  if (role !== "manager") {
     redirect("/");
   }
 
